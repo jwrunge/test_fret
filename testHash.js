@@ -27,16 +27,30 @@ trackers.push(new HashChangeTracker(`ARRAY of 300-CHAR STRINGS (x${arrNum})`, st
 trackers.push(new HashChangeTracker(`MAP of INTS (x${arrNum})`, numMap));
 trackers.push(new HashChangeTracker(`MAP of 300-CHAR STRINGS (x${arrNum})`, strMap));
 
-console.log("\nChecking initial value sizes:");
-for(let tracker of trackers) {
-    console.log(`\t${tracker.name}: Size: ${(typeof tracker.value === "number" ? tracker.value : tracker.value?.length ?? tracker.value.size)}`);
-}
-
 async function updates() {
+    //Initial hash
+    console.log("\nChecking initial value sizes:");
+    for(let tracker of trackers) {
+        const start = performance.now();
+        await tracker.track.check(tracker.value);
+        const time = performance.now() - start;
+        console.log(`\t${tracker.name}: ${time.toFixed(3)} ms; Size: ${
+            (typeof 
+                tracker.value === "number" ? 
+                tracker.value : 
+                tracker.value.hasOwnProperty("length") ?
+                tracker.value?.length :
+                tracker.value.hasOwnProperty("size") ? 
+                tracker.value?.size :
+                JSON.stringify(tracker.value).length
+            )}`);
+    }
+
     //No changes
     for(let i of [1,2,3]) {
         console.log(`\nNo updates: TEST ${i}`);
         for(let tracker of trackers) {
+            console.log("\nNAME:" + tracker.name);
             const new_value = structuredClone(tracker.value);
             const start = performance.now();
             await tracker.track.check(new_value, tracker.value);

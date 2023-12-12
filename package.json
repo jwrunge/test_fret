@@ -9,6 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "fret": "file:../hypervigile"
+    "fret": "file:../Code/hypervigile"
   }
 }
