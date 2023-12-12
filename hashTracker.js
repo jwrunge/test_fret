@@ -1,19 +1,18 @@
 const Fret = require('fret');
-console.log(Fret)
 
 class HashChangeTracker {
   name = "Unnamed HashChangeTracker";
   value;
   track = Fret({
     onHash: ()=> {
-      console.log(`Hash changed for ${this.name}`);
+      console.log(`\t** Hash changed for ${this.name}`);
     },
     onChange: (value)=> {
-      console.log(`Value changed for ${this.name} - new value: ${value}`);
+      console.log(`\t** Value changed for ${this.name}`);
       this.value = value;
     },
-    onIgnore: (value)=> {
-      console.log(`Value ignored for ${this.name} - current value: ${value}`);
+    onIgnore: ()=> {
+      console.log(`\t** Value ignored for ${this.name}`);
     }
   });
 
